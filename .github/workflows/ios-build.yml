@@ -1,4 +1,4 @@
-name: iOS Build
+name: iOS Build (Test Mode - No Code Signing)
 
 on:
   push:
@@ -8,7 +8,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  build-ios:
+  build-ios-test:
     runs-on: macos-latest
     
     steps:
@@ -30,14 +30,25 @@ jobs:
     - name: Analyze code
       run: flutter analyze
       
-    - name: Build iOS app
+    - name: Build iOS app (No Code Signing)
       run: flutter build ios --release --no-codesign
       
-    - name: Build IPA
-      run: flutter build ipa --release
+    - name: Build iOS Archive (No Code Signing)
+      run: flutter build ipa --release --no-codesign
       
-    - name: Upload IPA
+    - name: Upload iOS Build Artifacts
       uses: actions/upload-artifact@v3
       with:
-        name: ios-app
-        path: build/ios/ipa/*.ipa
+        name: ios-build-test
+        path: |
+          build/ios/ipa/*.ipa
+          build/ios/Release-iphoneos/*.app
+        retention-days: 7
+        
+    - name: Upload Build Logs
+      uses: actions/upload-artifact@v3
+      with:
+        name: build-logs
+        path: |
+          build/ios/ios_build.log
+        retention-days: 7
