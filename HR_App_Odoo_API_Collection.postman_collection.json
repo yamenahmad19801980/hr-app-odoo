@@ -1,0 +1,945 @@
+{
+    "info": {
+        "_postman_id": "hr-app-odoo-api-collection",
+        "name": "HR App Odoo API Collection",
+        "description": "Complete API collection for HR App Odoo integration. Includes authentication, HR operations, attendance management, expense handling, and more.",
+        "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+        "_exporter_id": "hr-app-odoo"
+    },
+    "item": [
+        {
+            "name": "🔐 Authentication",
+            "item": [
+                {
+                    "name": "1. Get Web Session",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "User-Agent",
+                                "value": "HR App Flutter Odoo.sh",
+                                "type": "text"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{baseUrl}}/web",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "web"
+                            ]
+                        },
+                        "description": "Get initial web session cookie for Odoo.sh compatibility"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "2. Authenticate User",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json",
+                                "type": "text"
+                            },
+                            {
+                                "key": "User-Agent",
+                                "value": "HR App Flutter Odoo.sh",
+                                "type": "text"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application/json",
+                                "type": "text"
+                            },
+                            {
+                                "key": "Cookie",
+                                "value": "session_id={{sessionId}}",
+                                "type": "text"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"jsonrpc\": \"2.0\",\n  \"method\": \"call\",\n  \"params\": {\n    \"db\": \"{{database}}\",\n    \"login\": \"{{username}}\",\n    \"password\": \"{{password}}\"\n  }\n}"
+                        },
+                        "url": {
+                            "raw": "{{baseUrl}}/web/session/authenticate",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "web",
+                                "session",
+                                "authenticate"
+                            ]
+                        },
+                        "description": "Authenticate user with Odoo credentials and get session"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "3. Test Connection",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "User-Agent",
+                                "value": "HR App Flutter Odoo.sh",
+                                "type": "text"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{baseUrl}}/web",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "web"
+                            ]
+                        },
+                        "description": "Test if Odoo server is reachable"
+                    },
+                    "response": []
+                }
+            ],
+            "description": "Authentication and session management endpoints"
+        },
+        {
+            "name": "👤 Employee Management",
+            "item": [
+                {
+                    "name": "Get Current Employee",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json",
+                                "type": "text"
+                            },
+                            {
+                                "key": "User-Agent",
+                                "value": "HR App Flutter Odoo.sh",
+                                "type": "text"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application/json",
+                                "type": "text"
+                            },
+                            {
+                                "key": "X-Requested-With",
+                                "value": "XMLHttpRequest",
+                                "type": "text"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"jsonrpc\": \"2.0\",\n  \"method\": \"call\",\n  \"params\": {\n    \"service\": \"object\",\n    \"method\": \"execute_kw\",\n    \"args\": [\n      \"{{database}}\",\n      \"{{userId}}\",\n      \"{{password}}\",\n      \"hr.employee\",\n      \"search_read\",\n      [\n        [\"user_id\", \"=\", \"{{userId}}\"]\n      ],\n      [\n        \"id\", \"name\", \"work_email\", \"work_phone\", \"job_title\",\n        \"department_id\", \"work_location_id\", \"image_128\", \"active\", \"user_id\"\n      ],\n      0,\n      1,\n      \"id desc\",\n      {}\n    ]\n  }\n}"
+                        },
+                        "url": {
+                            "raw": "{{baseUrl}}/jsonrpc",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "jsonrpc"
+                            ]
+                        },
+                        "description": "Get employee information for the currently authenticated user"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Get All Employees",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json",
+                                "type": "text"
+                            },
+                            {
+                                "key": "User-Agent",
+                                "value": "HR App Flutter Odoo.sh",
+                                "type": "text"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application/json",
+                                "type": "text"
+                            },
+                            {
+                                "key": "X-Requested-With",
+                                "value": "XMLHttpRequest",
+                                "type": "text"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"jsonrpc\": \"2.0\",\n  \"method\": \"call\",\n  \"params\": {\n    \"service\": \"object\",\n    \"method\": \"execute_kw\",\n    \"args\": [\n      \"{{database}}\",\n      \"{{userId}}\",\n      \"{{password}}\",\n      \"hr.employee\",\n      \"search_read\",\n      [\n        [\"active\", \"=\", true]\n      ],\n      [\n        \"id\", \"name\", \"work_email\", \"work_phone\", \"job_title\",\n        \"department_id\", \"work_location_id\", \"image_128\", \"active\"\n      ],\n      0,\n      100,\n      \"id desc\",\n      {}\n    ]\n  }\n}"
+                        },
+                        "url": {
+                            "raw": "{{baseUrl}}/jsonrpc",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "jsonrpc"
+                            ]
+                        },
+                        "description": "Get all active employees in the system"
+                    },
+                    "response": []
+                }
+            ],
+            "description": "Employee information and management endpoints"
+        },
+        {
+            "name": "⏰ Attendance Management",
+            "item": [
+                {
+                    "name": "Check In Employee",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json",
+                                "type": "text"
+                            },
+                            {
+                                "key": "User-Agent",
+                                "value": "HR App Flutter Odoo.sh",
+                                "type": "text"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application/json",
+                                "type": "text"
+                            },
+                            {
+                                "key": "X-Requested-With",
+                                "value": "XMLHttpRequest",
+                                "type": "text"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"jsonrpc\": \"2.0\",\n  \"method\": \"call\",\n  \"params\": {\n    \"service\": \"object\",\n    \"method\": \"execute_kw\",\n    \"args\": [\n      \"{{database}}\",\n      \"{{userId}}\",\n      \"{{password}}\",\n      \"hr.attendance\",\n      \"create\",\n      [\n        {\n          \"employee_id\": \"{{employeeId}}\",\n          \"check_in\": \"{{checkInTime}}\"\n        }\n      ],\n      {}\n    ]\n  }\n}"
+                        },
+                        "url": {
+                            "raw": "{{baseUrl}}/jsonrpc",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "jsonrpc"
+                            ]
+                        },
+                        "description": "Create attendance record for employee check-in"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Check Out Employee",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json",
+                                "type": "text"
+                            },
+                            {
+                                "key": "User-Agent",
+                                "value": "HR App Flutter Odoo.sh",
+                                "type": "text"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application/json",
+                                "type": "text"
+                            },
+                            {
+                                "key": "X-Requested-With",
+                                "value": "XMLHttpRequest",
+                                "type": "text"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"jsonrpc\": \"2.0\",\n  \"method\": \"call\",\n  \"params\": {\n    \"service\": \"object\",\n    \"method\": \"execute_kw\",\n    \"args\": [\n      \"{{database}}\",\n      \"{{userId}}\",\n      \"{{password}}\",\n      \"hr.attendance\",\n      \"write\",\n      [\n        \"{{attendanceId}}\"\n      ],\n      {\n        \"check_out\": \"{{checkOutTime}}\"\n      }\n    ]\n  }\n}"
+                        },
+                        "url": {
+                            "raw": "{{baseUrl}}/jsonrpc",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "jsonrpc"
+                            ]
+                        },
+                        "description": "Update attendance record with check-out time"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Get Employee Attendance",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json",
+                                "type": "text"
+                            },
+                            {
+                                "key": "User-Agent",
+                                "value": "HR App Flutter Odoo.sh",
+                                "type": "text"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application/json",
+                                "type": "text"
+                            },
+                            {
+                                "key": "X-Requested-With",
+                                "value": "XMLHttpRequest",
+                                "type": "text"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"jsonrpc\": \"2.0\",\n  \"method\": \"call\",\n  \"params\": {\n    \"service\": \"object\",\n    \"method\": \"execute_kw\",\n    \"args\": [\n      \"{{database}}\",\n      \"{{userId}}\",\n      \"{{password}}\",\n      \"hr.attendance\",\n      \"search_read\",\n      [\n        [\"employee_id\", \"=\", \"{{employeeId}}\"],\n        [\"check_in\", \">=\", \"{{startDate}}\"],\n        [\"check_in\", \"<=\", \"{{endDate}}\"]\n      ],\n      [\n        \"id\", \"employee_id\", \"check_in\", \"check_out\", \"create_date\"\n      ],\n      0,\n      20,\n      \"check_in desc\",\n      {}\n    ]\n  }\n}"
+                        },
+                        "url": {
+                            "raw": "{{baseUrl}}/jsonrpc",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "jsonrpc"
+                            ]
+                        },
+                        "description": "Get attendance records for a specific employee within date range"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Get Current Attendance",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json",
+                                "type": "text"
+                            },
+                            {
+                                "key": "User-Agent",
+                                "value": "HR App Flutter Odoo.sh",
+                                "type": "text"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application/json",
+                                "type": "text"
+                            },
+                            {
+                                "key": "X-Requested-With",
+                                "value": "XMLHttpRequest",
+                                "type": "text"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"jsonrpc\": \"2.0\",\n  \"method\": \"call\",\n  \"params\": {\n    \"service\": \"object\",\n    \"method\": \"execute_kw\",\n    \"args\": [\n      \"{{database}}\",\n      \"{{userId}}\",\n      \"{{password}}\",\n      \"hr.attendance\",\n      \"search_read\",\n      [\n        [\"employee_id\", \"=\", \"{{employeeId}}\"],\n        [\"check_out\", \"=\", false]\n      ],\n      [\n        \"id\", \"employee_id\", \"check_in\", \"check_out\", \"create_date\"\n      ],\n      0,\n      1,\n      \"create_date desc\",\n      {}\n    ]\n  }\n}"
+                        },
+                        "url": {
+                            "raw": "{{baseUrl}}/jsonrpc",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "jsonrpc"
+                            ]
+                        },
+                        "description": "Get current active attendance record for employee"
+                    },
+                    "response": []
+                }
+            ],
+            "description": "Attendance tracking and management endpoints"
+        },
+        {
+            "name": "💰 Expense Management",
+            "item": [
+                {
+                    "name": "Create Expense",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json",
+                                "type": "text"
+                            },
+                            {
+                                "key": "User-Agent",
+                                "value": "HR App Flutter Odoo.sh",
+                                "type": "text"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application/json",
+                                "type": "text"
+                            },
+                            {
+                                "key": "X-Requested-With",
+                                "value": "XMLHttpRequest",
+                                "type": "text"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"jsonrpc\": \"2.0\",\n  \"method\": \"call\",\n  \"params\": {\n    \"service\": \"object\",\n    \"method\": \"execute_kw\",\n    \"args\": [\n      \"{{database}}\",\n      \"{{userId}}\",\n      \"{{password}}\",\n      \"hr.expense\",\n      \"create\",\n      [\n        {\n          \"name\": \"{{expenseName}}\",\n          \"date\": \"{{expenseDate}}\",\n          \"state\": \"draft\",\n          \"total_amount\": \"{{totalAmount}}\",\n          \"tax_amount\": \"{{taxAmount}}\",\n          \"employee_id\": \"{{employeeId}}\"\n        }\n      ],\n      {}\n    ]\n  }\n}"
+                        },
+                        "url": {
+                            "raw": "{{baseUrl}}/jsonrpc",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "jsonrpc"
+                            ]
+                        },
+                        "description": "Create new expense record with sudo privileges"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Get Employee Expenses",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json",
+                                "type": "text"
+                            },
+                            {
+                                "key": "User-Agent",
+                                "value": "HR App Flutter Odoo.sh",
+                                "type": "text"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application/json",
+                                "type": "text"
+                            },
+                            {
+                                "key": "X-Requested-With",
+                                "value": "XMLHttpRequest",
+                                "type": "text"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"jsonrpc\": \"2.0\",\n  \"method\": \"call\",\n  \"params\": {\n    \"service\": \"object\",\n    \"method\": \"execute_kw\",\n    \"args\": [\n      \"{{database}}\",\n      \"{{userId}}\",\n      \"{{password}}\",\n      \"hr.expense\",\n      \"search_read\",\n      [\n        [\"employee_id\", \"=\", \"{{employeeId}}\"]\n      ],\n      [\n        \"id\", \"name\", \"description\", \"total_amount\", \"tax_amount\",\n        \"date\", \"state\", \"employee_id\", \"product_id\", \"create_date\", \"write_date\"\n      ],\n      0,\n      100,\n      \"create_date desc\",\n      {}\n    ]\n  }\n}"
+                        },
+                        "url": {
+                            "raw": "{{baseUrl}}/jsonrpc",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "jsonrpc"
+                            ]
+                        },
+                        "description": "Get all expenses for a specific employee"
+                    },
+                    "response": []
+                }
+            ],
+            "description": "Expense creation and management endpoints"
+        },
+        {
+            "name": "📊 Payslip Management",
+            "item": [
+                {
+                    "name": "Get Employee Payslips",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json",
+                                "type": "text"
+                            },
+                            {
+                                "key": "User-Agent",
+                                "value": "HR App Flutter Odoo.sh",
+                                "type": "text"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application/json",
+                                "type": "text"
+                            },
+                            {
+                                "key": "X-Requested-With",
+                                "value": "XMLHttpRequest",
+                                "type": "text"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"jsonrpc\": \"2.0\",\n  \"method\": \"call\",\n  \"params\": {\n    \"service\": \"object\",\n    \"method\": \"execute_kw\",\n    \"args\": [\n      \"{{database}}\",\n      \"{{userId}}\",\n      \"{{password}}\",\n      \"hr.payslip\",\n      \"search_read\",\n      [\n        [\"employee_id\", \"=\", \"{{employeeId}}\"]\n      ],\n      [\n        \"id\", \"name\", \"employee_id\", \"state\", \"date_from\", \"date_to\",\n        \"date\", \"basic_wage\", \"gross_wage\", \"net_wage\", \"create_date\", \"write_date\"\n      ],\n      0,\n      20,\n      \"date desc\",\n      {}\n    ]\n  }\n}"
+                        },
+                        "url": {
+                            "raw": "{{baseUrl}}/jsonrpc",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "jsonrpc"
+                            ]
+                        },
+                        "description": "Get payslips for a specific employee"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Get All Payslips",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json",
+                                "type": "text"
+                            },
+                            {
+                                "key": "User-Agent",
+                                "value": "HR App Flutter Odoo.sh",
+                                "type": "text"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application/json",
+                                "type": "text"
+                            },
+                            {
+                                "key": "X-Requested-With",
+                                "value": "XMLHttpRequest",
+                                "type": "text"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"jsonrpc\": \"2.0\",\n  \"method\": \"call\",\n  \"params\": {\n    \"service\": \"object\",\n    \"method\": \"execute_kw\",\n    \"args\": [\n      \"{{database}}\",\n      \"{{userId}}\",\n      \"{{password}}\",\n      \"hr.payslip\",\n      \"search_read\",\n      [],\n      [\n        \"id\", \"name\", \"employee_id\", \"state\", \"date_from\", \"date_to\",\n        \"date\", \"basic_wage\", \"gross_wage\", \"net_wage\", \"create_date\", \"write_date\"\n      ],\n      0,\n      20,\n      \"date desc\",\n      {}\n    ]\n  }\n}"
+                        },
+                        "url": {
+                            "raw": "{{baseUrl}}/jsonrpc",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "jsonrpc"
+                            ]
+                        },
+                        "description": "Get all payslips in the system (admin view)"
+                    },
+                    "response": []
+                }
+            ],
+            "description": "Payslip access and management endpoints"
+        },
+        {
+            "name": "📋 Contract Management",
+            "item": [
+                {
+                    "name": "Get Employee Contracts",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json",
+                                "type": "text"
+                            },
+                            {
+                                "key": "User-Agent",
+                                "value": "HR App Flutter Odoo.sh",
+                                "type": "text"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application/json",
+                                "type": "text"
+                            },
+                            {
+                                "key": "X-Requested-With",
+                                "value": "XMLHttpRequest",
+                                "type": "text"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"jsonrpc\": \"2.0\",\n  \"method\": \"call\",\n  \"params\": {\n    \"service\": \"object\",\n    \"method\": \"execute_kw\",\n    \"args\": [\n      \"{{database}}\",\n      \"{{userId}}\",\n      \"{{password}}\",\n      \"hr.contract\",\n      \"search_read\",\n      [\n        [\"employee_id\", \"=\", \"{{employeeId}}\"]\n      ],\n      [\n        \"id\", \"name\", \"employee_id\", \"date_start\", \"date_end\",\n        \"wage\", \"state\", \"create_date\", \"write_date\"\n      ],\n      0,\n      20,\n      \"date_start desc\",\n      {}\n    ]\n  }\n}"
+                        },
+                        "url": {
+                            "raw": "{{baseUrl}}/jsonrpc",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "jsonrpc"
+                            ]
+                        },
+                        "description": "Get contracts for a specific employee"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Get All Contracts",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json",
+                                "type": "text"
+                            },
+                            {
+                                "key": "User-Agent",
+                                "value": "HR App Flutter Odoo.sh",
+                                "type": "text"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application/json",
+                                "type": "text"
+                            },
+                            {
+                                "key": "X-Requested-With",
+                                "value": "XMLHttpRequest",
+                                "type": "text"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"jsonrpc\": \"2.0\",\n  \"method\": \"call\",\n  \"params\": {\n    \"service\": \"object\",\n    \"method\": \"execute_kw\",\n    \"args\": [\n      \"{{database}}\",\n      \"{{userId}}\",\n      \"{{password}}\",\n      \"hr.contract\",\n      \"search_read\",\n      [],\n      [\n        \"id\", \"name\", \"employee_id\", \"date_start\", \"date_end\",\n        \"wage\", \"state\", \"create_date\", \"write_date\"\n      ],\n      0,\n      20,\n      \"date_start desc\",\n      {}\n    ]\n  }\n}"
+                        },
+                        "url": {
+                            "raw": "{{baseUrl}}/jsonrpc",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "jsonrpc"
+                            ]
+                        },
+                        "description": "Get all contracts in the system (admin view)"
+                    },
+                    "response": []
+                }
+            ],
+            "description": "Employment contract management endpoints"
+        },
+        {
+            "name": "🏖️ Leave Management",
+            "item": [
+                {
+                    "name": "Get Employee Leaves",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json",
+                                "type": "text"
+                            },
+                            {
+                                "key": "User-Agent",
+                                "value": "HR App Flutter Odoo.sh",
+                                "type": "text"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application/json",
+                                "type": "text"
+                            },
+                            {
+                                "key": "X-Requested-With",
+                                "value": "XMLHttpRequest",
+                                "type": "text"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"jsonrpc\": \"2.0\",\n  \"method\": \"call\",\n  \"params\": {\n    \"service\": \"object\",\n    \"method\": \"execute_kw\",\n    \"args\": [\n      \"{{database}}\",\n      \"{{userId}}\",\n      \"{{password}}\",\n      \"hr.leave\",\n      \"search_read\",\n      [\n        [\"employee_id\", \"=\", \"{{employeeId}}\"]\n      ],\n      [\n        \"id\", \"name\", \"employee_id\", \"state\", \"date_from\", \"date_to\",\n        \"number_of_days\", \"holiday_status_id\", \"create_date\", \"write_date\"\n      ],\n      0,\n      50,\n      \"date_from desc\",\n      {}\n    ]\n  }\n}"
+                        },
+                        "url": {
+                            "raw": "{{baseUrl}}/jsonrpc",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "jsonrpc"
+                            ]
+                        },
+                        "description": "Get leave requests for a specific employee"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Get Holiday Status Types",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json",
+                                "type": "text"
+                            },
+                            {
+                                "key": "User-Agent",
+                                "value": "HR App Flutter Odoo.sh",
+                                "type": "text"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application/json",
+                                "type": "text"
+                            },
+                            {
+                                "key": "X-Requested-With",
+                                "value": "XMLHttpRequest",
+                                "type": "text"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"jsonrpc\": \"2.0\",\n  \"method\": \"call\",\n  \"params\": {\n    \"service\": \"object\",\n    \"method\": \"execute_kw\",\n    \"args\": [\n      \"{{database}}\",\n      \"{{userId}}\",\n      \"{{password}}\",\n      \"hr.leave.type\",\n      \"search_read\",\n      [],\n      [\n        \"id\", \"name\", \"active\"\n      ],\n      0,\n      50,\n      \"name asc\",\n      {}\n    ]\n  }\n}"
+                        },
+                        "url": {
+                            "raw": "{{baseUrl}}/jsonrpc",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "jsonrpc"
+                            ]
+                        },
+                        "description": "Get available holiday status types"
+                    },
+                    "response": []
+                }
+            ],
+            "description": "Leave request and holiday management endpoints"
+        },
+        {
+            "name": "🔍 System Information",
+            "item": [
+                {
+                    "name": "Get User Permissions",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json",
+                                "type": "text"
+                            },
+                            {
+                                "key": "User-Agent",
+                                "value": "HR App Flutter Odoo.sh",
+                                "type": "text"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application/json",
+                                "type": "text"
+                            },
+                            {
+                                "key": "X-Requested-With",
+                                "value": "XMLHttpRequest",
+                                "type": "text"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"jsonrpc\": \"2.0\",\n  \"method\": \"call\",\n  \"params\": {\n    \"service\": \"object\",\n    \"method\": \"execute_kw\",\n    \"args\": [\n      \"{{database}}\",\n      \"{{userId}}\",\n      \"{{password}}\",\n      \"res.users\",\n      \"search_read\",\n      [\n        [\"id\", \"=\", \"{{userId}}\"]\n      ],\n      [\n        \"id\", \"name\", \"login\", \"groups_id\", \"is_admin\", \"is_system\"\n      ],\n      0,\n      1,\n      \"id asc\",\n      {}\n    ]\n  }\n}"
+                        },
+                        "url": {
+                            "raw": "{{baseUrl}}/jsonrpc",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "jsonrpc"
+                            ]
+                        },
+                        "description": "Get current user permissions and group information"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Get Available Models",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json",
+                                "type": "text"
+                            },
+                            {
+                                "key": "User-Agent",
+                                "value": "HR App Flutter Odoo.sh",
+                                "type": "text"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application/json",
+                                "type": "text"
+                            },
+                            {
+                                "key": "X-Requested-With",
+                                "value": "XMLHttpRequest",
+                                "type": "text"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"jsonrpc\": \"2.0\",\n  \"method\": \"call\",\n  \"params\": {\n    \"service\": \"object\",\n    \"method\": \"execute_kw\",\n    \"args\": [\n      \"{{database}}\",\n      \"{{userId}}\",\n      \"{{password}}\",\n      \"ir.model\",\n      \"search_read\",\n      [\n        [\"model\", \"like\", \"hr.\"]\n      ],\n      [\n        \"id\", \"model\", \"name\"\n      ],\n      0,\n      20,\n      \"name asc\",\n      {}\n    ]\n  }\n}"
+                        },
+                        "url": {
+                            "raw": "{{baseUrl}}/jsonrpc",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "jsonrpc"
+                            ]
+                        },
+                        "description": "Get available HR models in the system"
+                    },
+                    "response": []
+                }
+            ],
+            "description": "System information and permission checking endpoints"
+        }
+    ],
+    "event": [
+        {
+            "listen": "prerequest",
+            "script": {
+                "type": "text/javascript",
+                "exec": [
+                    "// Auto-generate current timestamp for check-in/check-out",
+                    "if (pm.environment.get('generateTimestamp') === 'true') {",
+                    "    const now = new Date();",
+                    "    const timestamp = now.toISOString().slice(0, 19).replace('T', ' ');",
+                    "    pm.environment.set('checkInTime', timestamp);",
+                    "    pm.environment.set('checkOutTime', timestamp);",
+                    "    pm.environment.set('expenseDate', now.toISOString().slice(0, 10));",
+                    "}"
+                ]
+            }
+        }
+    ],
+    "variable": [
+        {
+            "key": "baseUrl",
+            "value": "https://codesolutioneg-hrtest-main-22760144.dev.odoo.com",
+            "type": "string"
+        },
+        {
+            "key": "database",
+            "value": "codesolutioneg-hrtest-main-22760144",
+            "type": "string"
+        },
+        {
+            "key": "username",
+            "value": "admin@admin.com",
+            "type": "string"
+        },
+        {
+            "key": "password",
+            "value": "admin",
+            "type": "string"
+        },
+        {
+            "key": "userId",
+            "value": "",
+            "type": "string"
+        },
+        {
+            "key": "sessionId",
+            "value": "",
+            "type": "string"
+        },
+        {
+            "key": "employeeId",
+            "value": "",
+            "type": "string"
+        },
+        {
+            "key": "attendanceId",
+            "value": "",
+            "type": "string"
+        },
+        {
+            "key": "checkInTime",
+            "value": "",
+            "type": "string"
+        },
+        {
+            "key": "checkOutTime",
+            "value": "",
+            "type": "string"
+        },
+        {
+            "key": "startDate",
+            "value": "",
+            "type": "string"
+        },
+        {
+            "key": "endDate",
+            "value": "",
+            "type": "string"
+        },
+        {
+            "key": "expenseName",
+            "value": "Test Expense",
+            "type": "string"
+        },
+        {
+            "key": "expenseDate",
+            "value": "",
+            "type": "string"
+        },
+        {
+            "key": "totalAmount",
+            "value": "100.00",
+            "type": "string"
+        },
+        {
+            "key": "taxAmount",
+            "value": "10.00",
+            "type": "string"
+        },
+        {
+            "key": "generateTimestamp",
+            "value": "true",
+            "type": "string"
+        }
+    ]
+}
