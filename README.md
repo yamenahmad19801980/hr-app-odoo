@@ -111,3 +111,61 @@ This project is licensed under the MIT License.
 ## Support
 
 For support and questions, please open an issue in the repository.
+
+
+////////////////////////////////////////////////////////////////////////
+
+I can see from the GitHub Actions page that **GitHub Actions is currently disabled for your account**. This is why you can't see the workflow runs yet.
+
+## 🔧 **How to Enable GitHub Actions:**
+
+### **Option 1: Contact GitHub Support (Recommended)**
+1. **Go to**: https://support.github.com
+2. **Click "Contact GitHub Support"**
+3. **Select "Account and Profile"** → **"Account settings"**
+4. **Request**: "Please enable GitHub Actions for my account"
+5. **Wait for response** (usually within 24 hours)
+
+### **Option 2: Check Account Settings**
+1. **Go to**: https://github.com/settings
+2. **Look for "Actions"** in the left sidebar
+3. **Check if there are any restrictions** or settings to enable
+
+### **Option 3: Check Repository Settings**
+1. **Go to**: https://github.com/yamenahmad19801980/hr-app-odoo/settings
+2. **Click "Actions"** in the left sidebar
+3. **Look for "Actions permissions"** section
+4. **Make sure it's set to "Allow all actions"**
+
+## �� **Why This Happens:**
+- **New accounts** sometimes have Actions disabled by default
+- **Account verification** might be required
+- **Usage limits** might be reached
+- **Account restrictions** from GitHub
+
+## �� **Alternative: Use Codemagic (No GitHub Actions needed)**
+
+Since GitHub Actions is disabled, let's use **Codemagic** instead - it's actually better for iOS builds:
+
+### **Codemagic Setup (Free & Easy):**
+1. **Go to**: https://codemagic.io
+2. **Sign up** with your GitHub account
+3. **Connect repository**: `yamenahmad19801980/hr-app-odoo`
+4. **The `codemagic.yaml` file will be automatically detected**
+5. **Click "Start new build"**
+6. **Download IPA file** when complete
+
+## 📱 **What You'll Get with Codemagic:**
+- ✅ **No GitHub Actions needed**
+- ✅ **Professional iOS build environment**
+- ✅ **Free tier available** (500 build minutes/month)
+- ✅ **Automatic builds** on code changes
+- ✅ **Easy setup** - just connect your repo
+
+## �� **Recommended Next Steps:**
+
+1. **Try enabling GitHub Actions** (contact support)
+2. **OR use Codemagic** (easier and more reliable for iOS)
+3. **Both will give you the same result** - an IPA file for testing
+
+Would you like me to help you set up Codemagic instead? It's actually the better option for iOS builds! 🚀
